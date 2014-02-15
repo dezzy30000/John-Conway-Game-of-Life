@@ -14,18 +14,14 @@ namespace GameOfLife.GameObjects
 
         public Cell[] GetNextGeneration()
         {
-            var nextGeneration = new List<Cell>();
+            IEnumerable<Cell> nextGeneration = new Cell[] { };
 
             foreach (var cell in _currentGeneration)
             {
-                nextGeneration.AddRange(cell.Process(_currentGeneration));
+                nextGeneration = nextGeneration.Union(cell.Process(_currentGeneration));
             }
 
-            _currentGeneration = nextGeneration
-                .Distinct()
-                .ToArray();
-
-            return _currentGeneration;
+            return (_currentGeneration = nextGeneration.ToArray());
         }
     }
 }
